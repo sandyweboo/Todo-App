@@ -1,0 +1,21 @@
+    const checkedItem = req.body.check;
+    const listName = req.body.listName;
+    if (listName === "Today") {
+        Item.findOneAndDelete({_id: checkedItem}).exec()
+            .then((result) => {
+                res.redirect('/');
+                console.log(result);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+        console.log("selected");
+    } else {
+        List.findOneAndUpdate({name: listName}, {$pull: {items: {_id: checkedItem}}})
+            .then((result) => {
+                res.redirect('/' + listName);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    }
